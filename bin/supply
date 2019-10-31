@@ -39,18 +39,12 @@ if [[ -f ${BUILD_DIR}/sonar-plugins.yml ]]; then
     # thanks https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable#comment42383654_10929511
     while IFS=': ' read -r PLUGIN_NAME PLUGIN_VERSION || [[ -n $PLUGIN_NAME ]]; do
 
+        PLUGIN_URL="${SONARQUBE_DIST_URL}/${PLUGIN_NAME}/${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
+        PLUGIN_PATH="${BUILD_DIR}/sonarqube/extensions/plugins/${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
+
         echo "       Installing ${PLUGIN_NAME} (${PLUGIN_VERSION})"
 
-        PLUGIN_JAR="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
-        PLUGIN_PATH="${BUILD_DIR}/sonarqube/extensions/plugins/${PLUGIN_JAR}"
-
-        if [[ -f ${BUILD_DIR}/${PLUGIN_JAR} ]];
-        then
-            cp ${BUILD_DIR}/${PLUGIN_JAR} ${PLUGIN_PATH}
-        else
-            PLUGIN_URL="${SONARQUBE_DIST_URL}/${PLUGIN_NAME}/${PLUGIN_JAR}"
-            wget ${PLUGIN_URL} -O "${PLUGIN_PATH}" --no-check-certificate -q
-        fi
+        wget ${PLUGIN_URL} -O "${PLUGIN_PATH}" --no-check-certificate -q
 
     done < ${BUILD_DIR}/sonar-plugins.yml
 
