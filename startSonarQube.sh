@@ -20,6 +20,6 @@ echo "-----> Starting SonarQube"
 /home/vcap/app/sonarqube/bin/linux-x86-64/sonar.sh start
 
 echo "-----> Tailing log"
-sleep 30 # give it a bit of time to create files
+sleep 10 # give it a bit of time to create files
 cd /home/vcap/app/sonarqube/logs
 tail -f ./sonar.log ./es.log ./web.log ./ce.log ./access.log
